@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINAL SCORES TEC M1</title>
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            margin: 30px;
+	align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+		border-radius: 12px;
+background-color: #cfe8ef;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FEBA4F;
+            border: 1px solid #ccc;
+		border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GRADES & MISSED ACTIVITIES</h1>
+<H5>SECTION M1</H5>
+        <form>
+            <label for="studentID">Enter Student ID (XX-XXXX-XXX):</label>
+            <input type="text" id="studentID" name="studentID" placeholder="XX-XXXX-XXX" required>
+            <button type="button" onclick="displayResults()">Get Results</button>
+        </form>
+
+        <div class="result">
+            <h2>Results</h2>
+            <p><strong>VPC (5):</strong> <span id="testScore">--</span></p>
+ 	    <p><strong>BMC (5):</strong> <span id="testScore2">--</span></p>
+		<p><strong>QUIZ (5):</strong> <span id="testScore3">--</span></p>
+		<p><strong>MARKETING (5):</strong> <span id="testScore4">--</span></p>
+		<p><strong>ADJUSTED GRADE (5):</strong> <span id="testScore5">--</span></p>
+            <p><strong>Missed Quizzes:</strong> <span id="missedQuizzes">--</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Embedded data (replace with your actual data)
+        const studentData = {
+'18-2711-252':{testScore: 3.7,testScore2: 2.8,testScore3: 4.8,testScore4: 4.4,testScore5: 4.2,missedQuizzes: ''},
+'15-3091-621':{testScore: 3.4,testScore2: 3.5,testScore3: 3.3,testScore4: 4.1,testScore5: 3.6,missedQuizzes: ''},
+'23-4161-408':{testScore: 4,testScore2: 4,testScore3: 4,testScore4: 4.6,testScore5: 4.1,missedQuizzes: ''},
+'23-1627-102':{testScore: 3.2,testScore2: 3.3,testScore3: 4.5,testScore4: 4,testScore5: 3.7,missedQuizzes: ''},
+'22-0232-861':{testScore: 4.1,testScore2: 3.9,testScore3: 4.8,testScore4: 4.8,testScore5: 4.3,missedQuizzes: ''},
+'14-1713-462':{testScore: 0,testScore2: 0,testScore3: 0,testScore4: 0,testScore5: 0,missedQuizzes: 'VPC, BMC, INDIVIDUAL QUIZ, MARKETING, IGS'},
+'22-2545-581':{testScore: 4.5,testScore2: 4.3,testScore3: 4.3,testScore4: 4.9,testScore5: 4.8,missedQuizzes: ''},
+'22-3029-574':{testScore: 4,testScore2: 3.3,testScore3: 4,testScore4: 5,testScore5: 4,missedQuizzes: ''},
+'22-6694-384':{testScore: 3.1,testScore2: 1.9,testScore3: 4.8,testScore4: 2.3,testScore5: 3.1,missedQuizzes: ''},
+'24-4367-995':{testScore: 0,testScore2: 0,testScore3: 0,testScore4: 0,testScore5: 0,missedQuizzes: 'VPC, BMC, INDIVIDUAL QUIZ, MARKETING, IGS'},
+'22-0094-349':{testScore: 4,testScore2: 4,testScore3: 4.5,testScore4: 4.5,testScore5: 4.6,missedQuizzes: ''},
+'22-2577-116':{testScore: 2.4,testScore2: 0.7,testScore3: 3.8,testScore4: 0.8,testScore5: 1.8,missedQuizzes: 'IGS'},
+'22-4856-438':{testScore: 3.4,testScore2: 3.4,testScore3: 3.8,testScore4: 4.1,testScore5: 4,missedQuizzes: ''},
+'24-6694-466':{testScore: 3.3,testScore2: 3.4,testScore3: 0,testScore4: 4,testScore5: 2.4,missedQuizzes: 'INDIVIDUAL QUIZ, IGS'},
+'22-0089-849':{testScore: 4.1,testScore2: 4,testScore3: 4.8,testScore4: 4.6,testScore5: 4.3,missedQuizzes: ''},
+'23-0750-604':{testScore: 4,testScore2: 4.1,testScore3: 4.8,testScore4: 4.6,testScore5: 4.7,missedQuizzes: ''},
+'22-2865-616':{testScore: 3.3,testScore2: 4.2,testScore3: 3.8,testScore4: 5,testScore5: 4.4,missedQuizzes: ''},
+'18-4709-745':{testScore: 3.7,testScore2: 3.6,testScore3: 3.8,testScore4: 4.3,testScore5: 4.2,missedQuizzes: ''},
+'23-5378-647':{testScore: 4.7,testScore2: 4.7,testScore3: 4.5,testScore4: 5,testScore5: 5,missedQuizzes: ''},
+'22-3087-850':{testScore: 4.5,testScore2: 4.3,testScore3: 4,testScore4: 4.9,testScore5: 4.8,missedQuizzes: ''},
+'22-2575-719':{testScore: 3.6,testScore2: 0.7,testScore3: 4.3,testScore4: 0.9,testScore5: 2.2,missedQuizzes: 'IGS'},
+'22-2543-579':{testScore: 2.4,testScore2: 0.8,testScore3: 4,testScore4: 0.9,testScore5: 1.8,missedQuizzes: 'IGS'},
+'22-2581-889':{testScore: 4.6,testScore2: 4.4,testScore3: 4.8,testScore4: 5,testScore5: 5,missedQuizzes: ''},
+'22-0634-820':{testScore: 4.1,testScore2: 4.2,testScore3: 4.8,testScore4: 5,testScore5: 4.8,missedQuizzes: ''},
+'23-5544-115':{testScore: 3.2,testScore2: 1.7,testScore3: 3.8,testScore4: 2,testScore5: 2.8,missedQuizzes: ''},
+'23-4136-116':{testScore: 4.1,testScore2: 3.8,testScore3: 4.5,testScore4: 4.5,testScore5: 4.2,missedQuizzes: ''},
+'22-3390-897':{testScore: 3.8,testScore2: 3.1,testScore3: 4.8,testScore4: 4.7,testScore5: 4,missedQuizzes: ''},
+'21-2987-685':{testScore: 4.2,testScore2: 3.9,testScore3: 3.8,testScore4: 4.8,testScore5: 4.5,missedQuizzes: ''},
+'22-0461-220':{testScore: 3.8,testScore2: 3.9,testScore3: 3.8,testScore4: 4.9,testScore5: 4.4,missedQuizzes: ''},
+'22-1226-894':{testScore: 3.3,testScore2: 2.8,testScore3: 4.5,testScore4: 4.3,testScore5: 3.7,missedQuizzes: ''},
+'22-0270-930':{testScore: 4.3,testScore2: 4,testScore3: 4.5,testScore4: 4.8,testScore5: 4.7,missedQuizzes: ''},
+'19-1271-563':{testScore: 1.6,testScore2: 0.7,testScore3: 0,testScore4: 0.9,testScore5: 0.7,missedQuizzes: 'INDIVIDUAL QUIZ, IGS'},
+'22-3224-975':{testScore: 3.7,testScore2: 4,testScore3: 4.5,testScore4: 4.8,testScore5: 4.5,missedQuizzes: ''},
+'23-4960-427':{testScore: 4,testScore2: 4.1,testScore3: 4.5,testScore4: 4.6,testScore5: 4.2,missedQuizzes: ''},
+'2011-40143':{testScore: 4.2,testScore2: 4.2,testScore3: 4.3,testScore4: 4.7,testScore5: 4.7,missedQuizzes: ''},
+'22-1115-624':{testScore: 3.9,testScore2: 3.9,testScore3: 4.8,testScore4: 4.9,testScore5: 4.6,missedQuizzes: ''},
+'22-2608-590':{testScore: 3.9,testScore2: 4,testScore3: 5,testScore4: 5,testScore5: 4.7,missedQuizzes: ''},
+'22-2461-378':{testScore: 4,testScore2: 3.9,testScore3: 4.5,testScore4: 4.9,testScore5: 4.6,missedQuizzes: ''},
+'23-5847-405':{testScore: 3.7,testScore2: 3.6,testScore3: 4.3,testScore4: 3.9,testScore5: 4.2,missedQuizzes: ''},
+'22-4447-642':{testScore: 4,testScore2: 3.9,testScore3: 4.8,testScore4: 5,testScore5: 4.7,missedQuizzes: ''},
+'22-2431-964':{testScore: 3.9,testScore2: 3.6,testScore3: 3.8,testScore4: 4.4,testScore5: 4.3,missedQuizzes: ''},
+'20-1211-294':{testScore: 3.7,testScore2: 3,testScore3: 3.8,testScore4: 4.6,testScore5: 3.7,missedQuizzes: ''},
+'22-0480-492':{testScore: 4,testScore2: 4.1,testScore3: 4.3,testScore4: 5,testScore5: 4.6,missedQuizzes: ''},
+'22-5244-915':{testScore: 2.9,testScore2: 2.3,testScore3: 4.8,testScore4: 2.5,testScore5: 2.8,missedQuizzes: 'IGS'},
+'23-2984-789':{testScore: 4,testScore2: 4.4,testScore3: 4.5,testScore4: 5,testScore5: 4.4,missedQuizzes: ''},
+'22-4397-851':{testScore: 3.9,testScore2: 3.5,testScore3: 4.8,testScore4: 4.1,testScore5: 4,missedQuizzes: ''},
+'20-7273-479':{testScore: 4.1,testScore2: 4,testScore3: 4.5,testScore4: 4.5,testScore5: 4.6,missedQuizzes: ''},
+'22-0595-700':{testScore: 4.1,testScore2: 4.1,testScore3: 4.3,testScore4: 5,testScore5: 4.3,missedQuizzes: ''},
+'22-2679-555':{testScore: 3.4,testScore2: 1.5,testScore3: 4.5,testScore4: 1.8,testScore5: 2.9,missedQuizzes: ''},
+'18-1869-843':{testScore: 3.6,testScore2: 3.6,testScore3: 4.5,testScore4: 4.5,testScore5: 4,missedQuizzes: ''},
+
+
+        };
+
+        function displayResults() {
+            const studentID = document.getElementById('studentID').value;
+
+            // Check if the student ID exists in the data
+            if (studentData[studentID]) {
+                document.getElementById('testScore').textContent = studentData[studentID].testScore;
+		document.getElementById('testScore2').textContent = studentData[studentID].testScore2;
+		document.getElementById('testScore3').textContent = studentData[studentID].testScore3;
+		document.getElementById('testScore4').textContent = studentData[studentID].testScore4;
+		document.getElementById('testScore5').textContent = studentData[studentID].testScore5;
+                document.getElementById('missedQuizzes').textContent = studentData[studentID].missedQuizzes;
+            } else {
+                document.getElementById('testScore').textContent = 'N/A';
+		document.getElementById('testScore2').textContent = 'N/A';
+		document.getElementById('testScore3').textContent = 'N/A';
+		document.getElementById('testScore4').textContent = 'N/A';
+		document.getElementById('testScore5').textContent = 'N/A';
+                document.getElementById('missedQuizzes').textContent = 'N/A';
+                alert('Student ID not found!');
+            }
+        }
+    </script>
+</body>
+</html>
